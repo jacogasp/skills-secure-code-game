@@ -47,19 +47,19 @@ int create_user_account(bool isAdmin, const char *username) {
     if (userid_next >= MAX_USERS) {
         fprintf(stderr, "the maximum number of users have been exceeded");
         return INVALID_USER_ID;
-    }    
+    }
 
     user_account *ua;
     if (strlen(username) > MAX_USERNAME_LEN) {
         fprintf(stderr, "the username is too long");
         return INVALID_USER_ID;
-    }    
+    }
     ua = malloc(sizeof (user_account));
     if (ua == NULL) {
         fprintf(stderr, "malloc failed to allocate memory");
         return INVALID_USER_ID;
     }
-    ua->isAdmin = isAdmin;
+        ua->isAdmin = isAdmin;
     ua->userid = userid_next++;
     strcpy(ua->username, username);
     memset(&ua->setting, 0, sizeof ua->setting);
@@ -80,7 +80,7 @@ bool update_setting(int user_id, const char *index, const char *value) {
         return false;
 
     v = strtol(value, &endptr, 10);
-    if (*endptr || i >= SETTINGS_COUNT)
+    if (*endptr || i >= SETTINGS_COUNT || i < 0)
         return false;
     accounts[user_id]->setting[i] = v;
     return true;
@@ -91,8 +91,8 @@ bool is_admin(int user_id) {
     if (user_id < 0 || user_id >= MAX_USERS) {
         fprintf(stderr, "invalid user id");
         return false;
-    }    
-    return accounts[user_id]->isAdmin;
+    }
+        return accounts[user_id]->isAdmin;
 }
 
 // Returns the username of the specified user
@@ -101,6 +101,6 @@ const char* username(int user_id) {
     if (user_id < 0 || user_id >= MAX_USERS) {
         fprintf(stderr, "invalid user id");
         return NULL;
-    }    
-    return accounts[user_id]->username;
+    }
+        return accounts[user_id]->username;
 }
